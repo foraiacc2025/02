@@ -19,14 +19,13 @@ int fibonacci(int n) {
 
 int main() {
     int n;
-    int valid_input = (scanf("%d", &n) == 1);
+    char c;
     
-    if (valid_input && n >= 0) {
-        int result = fibonacci(n);
-        printf("%d", result);
-    } else {
+    if (scanf("%d%c", &n, &c) != 2 || c != '\n' || n < 0) {
         printf("n/a");
+               
+    } else {
+        printf("%d", fibonacci(n));
     }
-    
-    return 0;
+        return 0;
 }
