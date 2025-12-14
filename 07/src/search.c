@@ -62,21 +62,22 @@ double variance(int *a, int n) {
 }
 
 double my_sqrt(double x) {
-    if (x < 0) return 0;
-    if (x == 0) return 0;
+    double result = 0.0;
     
-    double guess = x / 2.0;
-    double epsilon = 0.00001;
-    
-    while (1) {
-        double new_guess = (guess + x / guess) / 2.0;
-        if (new_guess - guess < epsilon && guess - new_guess < epsilon) {
-            break;
+    if (x > 0) {
+        double guess = x / 2.0;
+        double epsilon = 0.00001;
+        double diff = epsilon + 1;
+        
+        while (diff >= epsilon || diff <= -epsilon) {
+            double new_guess = (guess + x / guess) / 2.0;
+            diff = new_guess - guess;
+            guess = new_guess;
         }
-        guess = new_guess;
+        result = guess;
     }
     
-    return guess;
+    return result;
 }
 
 int search(int *a, int n) {

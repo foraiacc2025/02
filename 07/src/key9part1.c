@@ -47,9 +47,10 @@ int main() {
 }
 
 void input(int *buffer, int *length) {
-    scanf("%d", length);
-    for (int *p = buffer; p - buffer < *length; p++) {
-        scanf("%d", p);
+    if (scanf("%d", length) == 1) {
+        for (int *p = buffer; p - buffer < *length; p++) {
+            scanf("%d", p);
+        }
     }
 }
 

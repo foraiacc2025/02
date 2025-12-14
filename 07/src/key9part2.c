@@ -51,30 +51,21 @@ int main() {
 }
 
 int input(int *buff, int *len) {
-    char c;
+    char c = ' ';
     *len = 0;
+    int error = 0;
     
-    while (1) {
+    while (c != '\n' && *len < LEN && error == 0) {
         if (scanf("%d%c", &buff[*len], &c) != 2) {
-            return 0;
-        }
-        
-        if (buff[*len] < 0 || buff[*len] > 9) {
-            return 0;
-        }
-        
-        (*len)++;
-        
-        if (c == '\n') {
-            break;
-        }
-        
-        if (*len >= LEN) {
-            return 0;
+            error = 1;
+        } else if (buff[*len] < 0 || buff[*len] > 9) {
+            error = 1;
+        } else {
+            (*len)++;
         }
     }
     
-    return 1;
+    return (error == 0 && *len > 0) ? 1 : 0;
 }
 
 void output(int *buff, int len) {
@@ -87,15 +78,25 @@ void output(int *buff, int len) {
 }
 
 int compare(int *buff1, int len1, int *buff2, int len2) {
-    if (len1 > len2) return 1;
-    if (len1 < len2) return -1;
+    int result = 0;
     
-    for (int i = 0; i < len1; i++) {
-        if (buff1[i] > buff2[i]) return 1;
-        if (buff1[i] < buff2[i]) return -1;
+    if (len1 > len2) {
+        result = 1;
+    } else if (len1 < len2) {
+        result = -1;
+    } else {
+        int i = 0;
+        while (i < len1 && result == 0) {
+            if (buff1[i] > buff2[i]) {
+                result = 1;
+            } else if (buff1[i] < buff2[i]) {
+                result = -1;
+            }
+            i++;
+        }
     }
     
-    return 0;
+    return result;
 }
 
 void sum(int *buff1, int len1, int *buff2, int len2, int *result, int *result_length) {

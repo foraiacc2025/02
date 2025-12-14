@@ -41,20 +41,18 @@ void output(int *a, int n) {
 }
 
 void cycle_shift(int *a, int n, int c) {
-    if (n <= 1) return;
-    
-    // Нормализуем сдвиг
-    c = c % n;
-    if (c < 0) c += n;
-    
-    if (c == 0) return;
-    
-    // Сдвиг влево на c позиций
-    for (int shift = 0; shift < c; shift++) {
-        int temp = *a;
-        for (int *p = a; p - a < n - 1; p++) {
-            *p = *(p + 1);
+    if (n > 1) {
+        c = c % n;
+        if (c < 0) {
+            c += n;
         }
-        *(a + n - 1) = temp;
+        
+        for (int shift = 0; shift < c; shift++) {
+            int temp = *a;
+            for (int *p = a; p - a < n - 1; p++) {
+                *p = *(p + 1);
+            }
+            *(a + n - 1) = temp;
+        }
     }
 }
