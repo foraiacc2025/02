@@ -18,11 +18,12 @@ int main() {
 }
 
 int input(int *a, int *n) {
-    if (scanf("%d", n) != 1 || *n <= 0 || *n > NMAX) {
+    char c;
+    if (scanf("%d%c", n, &c) != 2 || *n <= 0 || *n > NMAX || (c != '\n' && c != ' ' && c != '\t')) {
         return 0;
     }
     for (int *p = a; p - a < *n; p++) {
-        if (scanf("%d", p) != 1) {
+        if (scanf("%d%c", p, &c) != 2 || (c != '\n' && c != ' ' && c != '\t')) {
             return 0;
         }
     }

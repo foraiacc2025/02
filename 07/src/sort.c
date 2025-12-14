@@ -17,8 +17,9 @@ int main() {
 }
 
 int input(int *a, int n) {
+    char c;
     for (int *p = a; p - a < n; p++) {
-        if (scanf("%d", p) != 1) {
+        if (scanf("%d%c", p, &c) != 2 || (c != '\n' && c != ' ' && c != '\t')) {
             return 0;
         }
     }

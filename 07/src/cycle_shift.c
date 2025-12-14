@@ -17,15 +17,16 @@ int main() {
 }
 
 int input(int *a, int *n, int *c) {
-    if (scanf("%d", n) != 1 || *n <= 0 || *n > NMAX) {
+    char ch;
+    if (scanf("%d%c", n, &ch) != 2 || *n <= 0 || *n > NMAX || (ch != '\n' && ch != ' ' && ch != '\t')) {
         return 0;
     }
     for (int *p = a; p - a < *n; p++) {
-        if (scanf("%d", p) != 1) {
+        if (scanf("%d%c", p, &ch) != 2 || (ch != '\n' && ch != ' ' && ch != '\t')) {
             return 0;
         }
     }
-    if (scanf("%d", c) != 1) {
+    if (scanf("%d%c", c, &ch) != 2 || (ch != '\n' && ch != ' ' && ch != '\t')) {
         return 0;
     }
     return 1;

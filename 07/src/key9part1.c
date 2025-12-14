@@ -25,6 +25,11 @@ int main() {
     int n, buffer[NMAX];
     input(buffer, &n);
     
+    if (n == 0) {
+        printf("n/a");
+        return 0;
+    }
+    
     int sum = sum_numbers(buffer, n);
     
     if (sum == 0) {
@@ -47,10 +52,16 @@ int main() {
 }
 
 void input(int *buffer, int *length) {
-    if (scanf("%d", length) == 1) {
+    char c;
+    if (scanf("%d%c", length, &c) == 2 && (c == '\n' || c == ' ' || c == '\t')) {
         for (int *p = buffer; p - buffer < *length; p++) {
-            scanf("%d", p);
+            if (scanf("%d%c", p, &c) != 2 || (c != '\n' && c != ' ' && c != '\t')) {
+                *length = 0;
+                return;
+            }
         }
+    } else {
+        *length = 0;
     }
 }
 
