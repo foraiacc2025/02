@@ -25,28 +25,31 @@ int main() {
     int n, buffer[NMAX];
     input(buffer, &n);
     
-    if (n == 0) {
-        printf("n/a");
-        return 0;
-    }
-    
-    int sum = sum_numbers(buffer, n);
-    
-    if (sum == 0) {
-        printf("n/a");
-        return 0;
-    }
-    
+    int error = 0;
+    int sum = 0;
+    int count = 0;
     int numbers[NMAX];
-    int count = find_numbers(buffer, n, sum, numbers);
     
-    if (count == 0) {
-        printf("n/a");
-        return 0;
+    if (n == 0) {
+        error = 1;
+    } else {
+        sum = sum_numbers(buffer, n);
+        if (sum == 0) {
+            error = 1;
+        } else {
+            count = find_numbers(buffer, n, sum, numbers);
+            if (count == 0) {
+                error = 1;
+            }
+        }
     }
     
-    printf("%d\n", sum);
-    output(numbers, count);
+    if (error) {
+        printf("n/a");
+    } else {
+        printf("%d\n", sum);
+        output(numbers, count);
+    }
     
     return 0;
 }

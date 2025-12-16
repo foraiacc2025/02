@@ -11,19 +11,23 @@ double lemniscate_bernoulli(double x) {
     double x_squared = x * x;
     double inner = 1.0 + 4.0 * x_squared;
     double outer = sqrt(inner) - x_squared - 1.0;
+    double result = -1;
     
-    if (outer < 0) {
-        return -1;
+    if (outer >= 0) {
+        result = sqrt(outer);
     }
     
-    return sqrt(outer);
+    return result;
 }
 
 double quadratic_hyperbola(double x) {
-    if (fabs(x) < 1e-10) {
-        return -1;
+    double result = -1;
+    
+    if (fabs(x) >= 1e-10) {
+        result = 1.0 / (x * x);
     }
-    return 1.0 / (x * x);
+    
+    return result;
 }
 
 int main() {

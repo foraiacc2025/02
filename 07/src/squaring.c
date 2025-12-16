@@ -9,25 +9,28 @@ int main() {
     int n, data[NMAX];
     if (input(data, &n) == 0) {
         printf("n/a");
-        return 0;
+    } else {
+        squaring(data, n);
+        output(data, n);
     }
-    squaring(data, n);
-    output(data, n);
-
     return 0;
 }
 
 int input(int *a, int *n) {
     char c;
+    int valid = 1;
+    
     if (scanf("%d%c", n, &c) != 2 || *n <= 0 || *n > NMAX || (c != '\n' && c != ' ' && c != '\t')) {
-        return 0;
+        valid = 0;
     }
-    for (int *p = a; p - a < *n; p++) {
+    
+    for (int *p = a; p - a < *n && valid; p++) {
         if (scanf("%d%c", p, &c) != 2 || (c != '\n' && c != ' ' && c != '\t')) {
-            return 0;
+            valid = 0;
         }
     }
-    return 1;
+    
+    return valid;
 }
 
 void output(int *a, int n) {

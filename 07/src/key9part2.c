@@ -26,25 +26,29 @@ int compare(int *buff1, int len1, int *buff2, int len2);
 int main() {
     int buff1[LEN], buff2[LEN];
     int len1, len2;
+    int error = 0;
     
     if (input(buff1, &len1) == 0 || input(buff2, &len2) == 0) {
-        printf("n/a");
-        return 0;
+        error = 1;
     }
     
-    int result_sum[LEN + 1];
-    int result_sub[LEN];
-    int len_sum, len_sub;
-    
-    sum(buff1, len1, buff2, len2, result_sum, &len_sum);
-    output(result_sum, len_sum);
-    printf("\n");
-    
-    sub(buff1, len1, buff2, len2, result_sub, &len_sub);
-    if (len_sub == -1) {
+    if (error) {
         printf("n/a");
     } else {
-        output(result_sub, len_sub);
+        int result_sum[LEN + 1];
+        int result_sub[LEN];
+        int len_sum, len_sub;
+        
+        sum(buff1, len1, buff2, len2, result_sum, &len_sum);
+        output(result_sum, len_sum);
+        printf("\n");
+        
+        sub(buff1, len1, buff2, len2, result_sub, &len_sub);
+        if (len_sub == -1) {
+            printf("n/a");
+        } else {
+            output(result_sub, len_sub);
+        }
     }
     
     return 0;
@@ -53,19 +57,19 @@ int main() {
 int input(int *buff, int *len) {
     char c = ' ';
     *len = 0;
-    int error = 0;
+    int valid = 1;
     
-    while (c != '\n' && *len < LEN && error == 0) {
+    while (c != '\n' && *len < LEN && valid) {
         if (scanf("%d%c", &buff[*len], &c) != 2) {
-            error = 1;
+            valid = 0;
         } else if (buff[*len] < 0 || buff[*len] > 9) {
-            error = 1;
+            valid = 0;
         } else {
             (*len)++;
         }
     }
     
-    return (error == 0 && *len > 0) ? 1 : 0;
+    return (valid && *len > 0) ? 1 : 0;
 }
 
 void output(int *buff, int len) {
@@ -114,7 +118,10 @@ void sum(int *buff1, int len1, int *buff2, int len2, int *result, int *result_le
         (*result_length)++;
     }
     
-    // Переворачиваем результат
+    while (*result_length > 1 && result[*result_length - 1] == 0) {
+        (*result_length)--;
+    }
+    
     for (int i = 0; i < *result_length / 2; i++) {
         int temp = result[i];
         result[i] = result[*result_length - 1 - i];
@@ -123,40 +130,37 @@ void sum(int *buff1, int len1, int *buff2, int len2, int *result, int *result_le
 }
 
 void sub(int *buff1, int len1, int *buff2, int len2, int *result, int *result_length) {
-    if (compare(buff1, len1, buff2, len2) < 0) {
-        *result_length = -1;
-        return;
-    }
+    *result_length = -1;
     
-    int borrow = 0;
-    *result_length = 0;
-    
-    for (int i = 0; i < len1; i++) {
-        int digit1 = buff1[len1 - 1 - i];
-        int digit2 = (len2 - 1 - i >= 0) ? buff2[len2 - 1 - i] : 0;
+    if (compare(buff1, len1, buff2, len2) >= 0) {
+        int borrow = 0;
+        *result_length = 0;
         
-        int diff = digit1 - digit2 - borrow;
-        
-        if (diff < 0) {
-            diff += 10;
-            borrow = 1;
-        } else {
-            borrow = 0;
+        for (int i = 0; i < len1; i++) {
+            int digit1 = buff1[len1 - 1 - i];
+            int digit2 = (len2 - 1 - i >= 0) ? buff2[len2 - 1 - i] : 0;
+            
+            int diff = digit1 - digit2 - borrow;
+            
+            if (diff < 0) {
+                diff += 10;
+                borrow = 1;
+            } else {
+                borrow = 0;
+            }
+            
+            result[i] = diff;
+            (*result_length)++;
         }
         
-        result[i] = diff;
-        (*result_length)++;
-    }
-    
-    // Убираем ведущие нули
-    while (*result_length > 1 && result[*result_length - 1] == 0) {
-        (*result_length)--;
-    }
-    
-    // Переворачиваем результат
-    for (int i = 0; i < *result_length / 2; i++) {
-        int temp = result[i];
-        result[i] = result[*result_length - 1 - i];
-        result[*result_length - 1 - i] = temp;
+        while (*result_length > 1 && result[*result_length - 1] == 0) {
+            (*result_length)--;
+        }
+        
+        for (int i = 0; i < *result_length / 2; i++) {
+            int temp = result[i];
+            result[i] = result[*result_length - 1 - i];
+            result[*result_length - 1 - i] = temp;
+        }
     }
 }
